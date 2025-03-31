@@ -1,17 +1,15 @@
-# MyPeep - Book Collection Manager
+## BookHive - Where Your Literary Obsessions Swarm
 
-A React application for managing your book collection with features like sorting, categorizing, and random book selection.
+BookHive is a React-based application designed for book lovers to discover, organize, and engage with literature. Whether you want to track your reading progress, create personalized collections, or connect with fellow readers, BookHive provides an intuitive and social way to manage your literary world.
 
 ## Features
 
-- User authentication
-- Book collection management
-- Sorting and filtering options
-- Random book picker
-- Custom categories and collections
-- Tagging system
-- Responsive design
-
+- User Authentication – Secure login and account management.
+- Personal Book Collection – Add, sort, and categorize your books.
+- Reading Lists & Recommendations – Curate and explore books based on interests.
+- Community Engagement – Connect with other readers and share insights.
+- Tagging System – Organize books with custom tags.
+- Responsive Design – Optimized for both desktop and mobile devices.
 ## Setup
 
 1. Clone the repository:
@@ -58,3 +56,24 @@ To deploy manually:
 - Firebase
 - GitHub Actions
 - GitHub Pages
+
+## My First Experience Using Cursor for BookHive:
+
+What I Liked:
+
+1. I found it incredibly helpful in speeding up development, especially when integrating Firebase and making changes directly within Cursor itself.
+2. I improved my ability to write clear prompts and debug issues more efficiently, making the overall development process much smoother.
+3. I enjoyed the creative freedom of simply providing direct requests and having the app generate code that aligned with my vision.
+
+## Challenges / Issues:
+
+1. Cursor sometimes generated incorrect file paths, which led to deployment errors I had to troubleshoot.
+2. Setting up authentication was more complicated than expected, and I had to make additional tweaks beyond what Cursor initially provided.
+3. Cursor didn’t always “remember” previous prompts, so I had to repeat instructions multiple times.
+
+## Project Documentation 
+[Tenisha Green_ BookHive Review.pdf](https://github.com/user-attachments/files/19541426/Tenisha.Green_.BookHive.Review.pdf)
+
+
+## Summary
+Overall, as a first-time Cursor user, I found it to be a powerful tool that helped me build BookHive more efficiently. Despite some challenges, this experience gave me a lot more confidence in developing and deploying full-stack applications.
