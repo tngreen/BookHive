@@ -690,7 +690,7 @@ function App() {
             </div>
           </div>
           <div className="book-grid">
-            {sortedAndFilteredBooks.map((book, index) => (
+            {sortedAndFilteredBooks.map((book) => (
               <div key={book.id} className="book-card wooden-frame">
                 {book.coverUrl && (
                   <div className="book-cover">
