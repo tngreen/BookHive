@@ -75,5 +75,7 @@ What I Liked:
 [Tenisha Green_ BookHive Review.pdf](https://github.com/user-attachments/files/19541426/Tenisha.Green_.BookHive.Review.pdf)
 
 
+Recording: file:///Users/tenishagreen/Documents/BookHive%20Overview.mp4
+
 ## Summary
 Overall, as a first-time Cursor user, I found it to be a powerful tool that helped me build BookHive more efficiently. Despite some challenges, this experience gave me a lot more confidence in developing and deploying full-stack applications.
