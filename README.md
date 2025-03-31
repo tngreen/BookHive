@@ -25,13 +25,13 @@ npm install
 
 3. Create a `.env` file in the root directory with your Firebase configuration:
 ```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+VITE_FIREBASE_API_KEY=AIzaSyDJasyXRb_4CrVOXpuezxm4F9hA6bgO_QU
+VITE_FIREBASE_AUTH_DOMAIN=mypeep2.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=mypeep2
+VITE_FIREBASE_STORAGE_BUCKET=mypeep2.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=698088624747
+VITE_FIREBASE_APP_ID=1:698088624747:web:39fbf7c3b7fdb63bde172e
+VITE_FIREBASE_MEASUREMENT_ID=G-SNFPNMJ745
 ```
 
 4. Start the development server:
