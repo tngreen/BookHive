@@ -11,7 +11,6 @@ import {
   addDoc, 
   query, 
   where, 
-  getDocs,
   orderBy,
   onSnapshot,
   deleteDoc,
@@ -34,6 +33,9 @@ interface Book {
   genre?: string;
   pageCount?: number;
   currentPage?: number;
+  tags?: string[];
+  category?: string;
+  collection?: string;
 }
 
 type NewBook = Omit<Book, 'id' | 'dateAdded' | 'userId'>;
@@ -78,31 +80,31 @@ const PREDEFINED_BOOKS = [
     title: "The Hobbit",
     author: "J.R.R. Tolkien",
     coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546071216i/5907.jpg",
-    description: "Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely traveling any farther than his pantry or cellar. But his contentment is disturbed when the wizard Gandalf and a company of dwarves arrive on his doorstep."
+    description: "Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely traveling any farther than his pantry or cellar. But his contentment is disturbed when the wizard Gandalf and a company of dwarves arrive on his doorstep. They embark on an epic quest to reclaim the dwarves' homeland from the fearsome dragon Smaug. Along the way, Bilbo discovers courage, friendship, and a magical ring that will change Middle-earth forever."
   },
   {
     title: "Pride and Prejudice",
     author: "Jane Austen",
     coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885.jpg",
-    description: "Pride and Prejudice follows the turbulent relationship between Elizabeth Bennet, the daughter of a country gentleman, and Fitzwilliam Darcy, a rich aristocratic landowner."
+    description: "Pride and Prejudice follows the turbulent relationship between Elizabeth Bennet, the daughter of a country gentleman, and Fitzwilliam Darcy, a rich aristocratic landowner. Through witty dialogue and social commentary, Austen explores themes of love, marriage, class, and reputation in Georgian-era England. The novel masterfully portrays the journey from first impressions to true understanding."
   },
   {
     title: "1984",
     author: "George Orwell",
     coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040.jpg",
-    description: "Winston Smith works for the Ministry of Truth in London, chief city of Airstrip One. Big Brother stares out from every poster, the Thought Police uncover every act of betrayal."
+    description: "Winston Smith works for the Ministry of Truth in London, chief city of Airstrip One. Big Brother stares out from every poster, the Thought Police uncover every act of betrayal. When Winston begins a forbidden love affair with Julia, he discovers the true nature of the Party's control and the devastating power of totalitarianism. A chilling prophecy of surveillance society and the manipulation of truth."
   },
   {
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1490528560i/4671.jpg",
-    description: "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan, of lavish parties on Long Island at a time when The New York Times noted 'gin was the national drink and sex the national obsession.'"
+    description: "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan, of lavish parties on Long Island at a time when The New York Times noted 'gin was the national drink and sex the national obsession.' Through the eyes of narrator Nick Carraway, Fitzgerald captures the decadence and disillusionment of the Jazz Age, exploring themes of wealth, love, and the American Dream."
   },
   {
     title: "To Kill a Mockingbird",
     author: "Harper Lee",
     coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1553383690i/2657.jpg",
-    description: "The story of racial injustice and the loss of innocence in the American South."
+    description: "The story of racial injustice and the loss of innocence in the American South. Through the eyes of young Scout Finch, we witness her father, Atticus Finch, defend a Black man falsely accused of a crime. The novel explores themes of prejudice, justice, and moral growth as Scout and her brother Jem navigate the complexities of their small Alabama town."
   }
 ];
 
@@ -134,6 +136,31 @@ function App() {
   const [activeTab, setActiveTab] = useState('discover');
   const [randomBook, setRandomBook] = useState(PREDEFINED_BOOKS[0]);
   const [bookOfDay, setBookOfDay] = useState(BOOKS_OF_DAY[0]);
+  const [sortBy, setSortBy] = useState<'title' | 'author' | 'dateAdded' | 'genre'>('dateAdded');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCollection, setSelectedCollection] = useState<string>('all');
+  const [categories] = useState([
+    'all',
+    'fiction',
+    'non-fiction',
+    'fantasy',
+    'mystery',
+    'romance',
+    'classics',
+    'biography',
+    'science fiction',
+    'poetry'
+  ]);
+  const [collections] = useState([
+    'all',
+    'summer reads',
+    'research books',
+    'classics',
+    'favorites',
+    'to-read',
+    'currently reading'
+  ]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -330,6 +357,16 @@ function App() {
     const randomIndex = Math.floor(Math.random() * PREDEFINED_BOOKS.length);
     setRandomBook(PREDEFINED_BOOKS[randomIndex]);
   };
+
+  const sortedAndFilteredBooks = [...filteredBooks]
+    .filter(book => selectedCategory === 'all' || book.category === selectedCategory)
+    .filter(book => selectedCollection === 'all' || book.collection === selectedCollection)
+    .sort((a, b) => {
+      const aValue = a[sortBy] || '';
+      const bValue = b[sortBy] || '';
+      const comparison = aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
 
   if (!user) {
     return (
@@ -543,7 +580,7 @@ function App() {
           </div>
 
           <div className="books-grid">
-            {filteredBooks.map(book => (
+            {sortedAndFilteredBooks.map(book => (
               <div key={book.id} className="book-card wooden-frame">
                 {book.coverUrl && (
                   <div className="book-cover">
@@ -599,9 +636,121 @@ function App() {
       )}
 
       {activeTab === 'organize' && (
-        <div className="wooden-frame">
-          <h2>Organize Your Library</h2>
-          <p>Coming soon: Organize your books by shelves, tags, and reading lists!</p>
+        <div className="organize-section">
+          <div className="organize-controls">
+            <div className="sort-controls">
+              <label htmlFor="sortBy">Sort by:</label>
+              <select
+                id="sortBy"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'title' | 'author' | 'dateAdded' | 'genre')}
+                className="wooden-input"
+              >
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="dateAdded">Date Added</option>
+                <option value="genre">Genre</option>
+              </select>
+              <button
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="wooden-button"
+              >
+                {sortOrder === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
+            <div className="filter-controls">
+              <label htmlFor="category">Category:</label>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="wooden-input"
+              >
+                <option value="all">All Categories</option>
+                {categories.filter(cat => cat !== 'all').map(category => (
+                  <option key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="collection">Collection:</label>
+              <select
+                id="collection"
+                value={selectedCollection}
+                onChange={(e) => setSelectedCollection(e.target.value)}
+                className="wooden-input"
+              >
+                <option value="all">All Collections</option>
+                {collections.filter(col => col !== 'all').map(collection => (
+                  <option key={collection} value={collection}>
+                    {collection.charAt(0).toUpperCase() + collection.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="book-grid">
+            {sortedAndFilteredBooks.map((book, index) => (
+              <div key={book.id} className="book-card wooden-frame">
+                {book.coverUrl && (
+                  <div className="book-cover">
+                    <img src={book.coverUrl} alt={book.title} />
+                  </div>
+                )}
+                <div className="book-content">
+                  <div className="book-header">
+                    <h2>{book.title}</h2>
+                    <div className="book-actions">
+                      <button 
+                        className="wooden-button edit-button"
+                        onClick={() => handleEdit(book)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="wooden-button delete-button"
+                        onClick={() => handleDelete(book.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <p className="author">by {book.author}</p>
+                  <div className="book-details">
+                    <span className={`status-badge ${book.status}`}>
+                      {book.status}
+                    </span>
+                    {book.genre && <span className="genre-badge">{book.genre}</span>}
+                    {book.category && <span className="category-badge">{book.category}</span>}
+                    {book.collection && <span className="collection-badge">{book.collection}</span>}
+                    {book.rating > 0 && (
+                      <div className="rating">
+                        {'★'.repeat(book.rating)}
+                        {'☆'.repeat(5 - book.rating)}
+                      </div>
+                    )}
+                  </div>
+                  {book.tags && book.tags.length > 0 && (
+                    <div className="tags">
+                      {book.tags.map(tag => (
+                        <span key={tag} className="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  {book.currentPage && book.pageCount && (
+                    <div className="progress-bar">
+                      <div 
+                        className="progress" 
+                        style={{ width: `${(book.currentPage / book.pageCount) * 100}%` }}
+                      />
+                    </div>
+                  )}
+                  <p className="notes">{book.notes}</p>
+                  <p className="date">Added: {new Date(book.dateAdded).toLocaleDateString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -614,62 +763,8 @@ function App() {
 
       {error && <div className="error-message">{error}</div>}
 
-      {isLoading ? (
+      {isLoading && (
         <div className="loading">Loading your hive...</div>
-      ) : (
-        <div className="books-grid">
-          {filteredBooks.map(book => (
-            <div key={book.id} className="book-card wooden-frame">
-              {book.coverUrl && (
-                <div className="book-cover">
-                  <img src={book.coverUrl} alt={book.title} />
-                </div>
-              )}
-              <div className="book-content">
-                <div className="book-header">
-                  <h2>{book.title}</h2>
-                  <div className="book-actions">
-                    <button 
-                      className="wooden-button edit-button"
-                      onClick={() => handleEdit(book)}
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      className="wooden-button delete-button"
-                      onClick={() => handleDelete(book.id)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-                <p className="author">by {book.author}</p>
-                <div className="book-details">
-                  <span className={`status-badge ${book.status}`}>
-                    {book.status}
-                  </span>
-                  {book.genre && <span className="genre-badge">{book.genre}</span>}
-                  {book.rating > 0 && (
-                    <div className="rating">
-                      {'★'.repeat(book.rating)}
-                      {'☆'.repeat(5 - book.rating)}
-                    </div>
-                  )}
-                </div>
-                {book.currentPage && book.pageCount && (
-                  <div className="progress-bar">
-                    <div 
-                      className="progress" 
-                      style={{ width: `${(book.currentPage / book.pageCount) * 100}%` }}
-                    />
-                  </div>
-                )}
-                <p className="notes">{book.notes}</p>
-                <p className="date">Added: {new Date(book.dateAdded).toLocaleDateString()}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       )}
 
       {isModalOpen && (
@@ -779,6 +874,55 @@ function App() {
                 className="wooden-input"
               />
             </div>
+            <div className="form-group">
+              <label htmlFor="category">Category:</label>
+              <select
+                id="category"
+                value={newBook.category || ''}
+                onChange={(e) => setNewBook({ ...newBook, category: e.target.value })}
+                className="wooden-input"
+              >
+                <option value="">Select a category</option>
+                {categories.filter(cat => cat !== 'all').map(category => (
+                  <option key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="collection">Collection:</label>
+              <select
+                id="collection"
+                value={newBook.collection || ''}
+                onChange={(e) => setNewBook({ ...newBook, collection: e.target.value })}
+                className="wooden-input"
+              >
+                <option value="">Select a collection</option>
+                {collections.filter(col => col !== 'all').map(collection => (
+                  <option key={collection} value={collection}>
+                    {collection.charAt(0).toUpperCase() + collection.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="tags">Tags (comma-separated):</label>
+              <input
+                id="tags"
+                type="text"
+                value={newBook.tags?.join(', ') || ''}
+                onChange={(e) => setNewBook({ 
+                  ...newBook, 
+                  tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag)
+                })}
+                placeholder="e.g., adventure, mystery, romance"
+                className="wooden-input"
+              />
+            </div>
+
             <div className="modal-buttons">
               <button onClick={handleSubmit} className="wooden-button">
                 {editingBook ? 'Save Changes' : 'Add Book'}

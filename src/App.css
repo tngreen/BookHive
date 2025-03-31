@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
+
 :root {
   --wood-color: #8B4513;
   --wood-light: #A0522D;
@@ -16,20 +18,45 @@
   --background-color: #F5F5DC;
   --error-color: #DC143C;
   --success-color: #228B22;
+  --primary-color: #ffd700;
+  --secondary-color: #8b4513;
+  --accent-color: #ffa500;
 }
 
 body {
   margin: 0;
-  font-family: 'Georgia', serif;
-  background-color: var(--background-color);
+  font-family: 'Merriweather', serif;
+  background: linear-gradient(rgba(240, 255, 240, 0.75), rgba(240, 255, 240, 0.75)),
+              url('https://res.cloudinary.com/dgzpzi5oz/image/upload/v1743116165/mystical-library-setting-with-fairy-tales-nature-children-perfect-educational-imagina_1003076-13190_nmmbul.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
   color: var(--text-color);
   background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23DEB887" fill-opacity="0.1" fill-rule="evenodd"%3E%3Ccircle cx="2" cy="2" r="1"/%3E%3C/g%3E%3C/svg%3E');
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(240, 255, 240, 0.85);
+  z-index: -1;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 .app-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-container {
@@ -54,7 +81,7 @@ body {
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
   font-size: 1rem;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -77,7 +104,7 @@ body {
   border: 2px solid var(--wood-color);
   border-radius: 8px;
   padding: 0.75rem;
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
   font-size: 1rem;
   width: 100%;
   transition: all 0.3s ease;
@@ -144,14 +171,45 @@ body {
 }
 
 .search-container {
-  width: 100%;
-  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .search-input {
-  width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
-  font-size: 1.1rem;
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid var(--wood-color);
+  border-radius: 8px;
+  font-family: 'Merriweather', serif;
+  font-size: 0.9rem;
+  background: var(--earth-light);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+}
+
+.search-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--wood-color);
+  color: var(--earth-light);
+  border: 2px solid var(--wood-dark);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Merriweather', serif;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 .button-group {
@@ -410,6 +468,11 @@ body {
   }
 
   .search-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-input {
     width: 100%;
   }
 
@@ -623,7 +686,7 @@ body {
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
   font-size: 1rem;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -649,7 +712,7 @@ body {
   border-radius: 8px;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -682,7 +745,7 @@ body {
   background: transparent;
   border: none;
   color: var(--text-color);
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
   font-size: 1.2rem;
   padding: 0.5rem 1.5rem;
   cursor: pointer;
@@ -740,7 +803,7 @@ body {
 .random-book-section h2 {
   color: var(--wood-color);
   margin-bottom: 1.5rem;
-  font-family: 'Georgia', serif;
+  font-family: 'Merriweather', serif;
 }
 
 .random-book-card {
@@ -814,5 +877,185 @@ body {
 
   .random-book-content {
     text-align: center;
+  }
+}
+
+.organize-section {
+  padding: 20px;
+}
+
+.organize-controls {
+  margin-bottom: 20px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sort-controls, .filter-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-controls label, .filter-controls label {
+  font-weight: bold;
+  color: #4a4a4a;
+}
+
+.sort-controls select, .filter-controls select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  min-width: 150px;
+}
+
+.category-badge, .collection-badge {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-right: 8px;
+}
+
+.collection-badge {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.tag {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #ffd700;
+    --secondary-color: #8b4513;
+    --accent-color: #ffa500;
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+  }
+
+  .app-container {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .wooden-frame {
+    background-color: #2d2d2d;
+    border-color: #3d3d3d;
+  }
+
+  .wooden-input {
+    background-color: #3d3d3d;
+    color: var(--text-color);
+    border-color: #4d4d4d;
+  }
+
+  .wooden-button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+  }
+
+  .wooden-button:hover {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .organize-controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sort-controls, .filter-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sort-controls select, .filter-controls select {
+    flex: 1;
+  }
+}
+
+.filter-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-controls select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.filter-controls select:hover {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+}
+
+.filter-controls select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+}
+
+.sunflower {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>') no-repeat center center;
+  background-size: contain;
+  animation: float 15s linear infinite;
+  opacity: 0.6;
+}
+
+.sunflower:nth-child(odd) {
+  left: -50px;
+  animation-delay: calc(var(--delay) * -1s);
+}
+
+.sunflower:nth-child(even) {
+  right: -50px;
+  animation-delay: var(--delay);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
   }
 }
